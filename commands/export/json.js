@@ -1,6 +1,6 @@
-const memory = require("../../memory.json");
-
 module.exports.run = async (bot, message, args) => {
+
+    const memory = require("../../memory/"+message.guild.id+".json");
 
     if (memory.tables[args[0]] == undefined) {
         return message.reply("Either the table you have referenced doesn't exist, or you have misspelled its name!")
@@ -13,8 +13,6 @@ module.exports.run = async (bot, message, args) => {
     let result2 = JSON.stringify(object);
 
     result = result2.replace("},{", "},\n{");
-
-    console.log(result);
 
     message.channel.send(result, { split: true, char: ',' });
 

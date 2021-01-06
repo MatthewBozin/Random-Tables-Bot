@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-const fs = require("fs");
-
 
 module.exports.run = async (bot, message, args) => {
 
@@ -24,9 +22,11 @@ module.exports.run = async (bot, message, args) => {
         "\n **.json**: Turn a table into a JSON object. Syntax: .json [tableid]"
     ];
 
-    let admin = [
+    let edit = [
         "\n **.dtable**: Delete an entire table. syntax: .dtable [tableid]",
-        "\n **.dentry**: Delete a specific entry from a table. syntax: .dentry [tableid] [entry number]"
+        "\n **.dentry**: Delete a specific entry from a table. syntax: .dentry [tableid] [entry number]",
+        "\n **.rename**: Rename a table. syntax: .rename [tableid] [new name]",
+        "\n **.replace**: Replace an entry in a table with new text. syntax: .rename [tableid] [entry number] [new entry]"
     ];
 
     const embed = new Discord.MessageEmbed()
@@ -35,7 +35,8 @@ module.exports.run = async (bot, message, args) => {
     .addField("Standard Commands: ", standard.join(""))
     .addField("View Commands: ", view.join(""))
     .addField("Export Commands: ", cexport.join(""))
-    .addField("Admin Commands: ", admin.join(""))
+    .addField("Edit Commands: ", edit.join(""))
+    .setFooter("Guide to Table References:\nTables can reference other tables. To do this, put the id of another table between ^'s. (Ex: This entry references ^table^.)\nGuide to Permissions: Commands in the 'Edit' category can only be used by server mods, the creator of the table in question, or the creator of the entry in question.")
     .setTimestamp() 
 
     message.channel.send(embed);

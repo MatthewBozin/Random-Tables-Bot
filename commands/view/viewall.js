@@ -1,13 +1,13 @@
-const memory = require("../../memory.json");
-
 module.exports.run = async (bot, message, args) => {
+
+    const memory = require("../../memory/"+message.guild.id+".json");
     
     let result = "Tables:";
 
     let tables = Object.keys(memory.tables);
 
     for (element of tables) {
-        result += "\n"+memory.tables[element].name+" ("+memory.tables[element].creator+") "+memory.tables[element].entries.length+" entries.";
+        result += "\n"+memory.tables[element].id+" ("+memory.tables[element].creator+") "+memory.tables[element].entries.length+" entries.";
     };
 
     message.channel.send(result, { split: true });

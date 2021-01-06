@@ -1,8 +1,8 @@
-const memory = require("../../memory.json");
-const { save } = require("../../modules/exports");
-const { nameid } = require("../../modules/exports");
+const { save, nameid } = require("../../modules/exports");
 
 module.exports.run = async (bot, message, args) => {
+    const memory = require("../../memory/"+message.guild.id+".json");
+
     
     if (memory.tables[args[0]] !== undefined) {
         return message.reply("A table by that name already exists!")
@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
         "entries":[]
     };
 
-    save("./memory.json", memory);
+    save("./memory/"+message.guild.id+".json", memory);
 
     message.reply("Table Created! ID: "+id+" Name: "+tablename);
 

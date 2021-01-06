@@ -1,6 +1,6 @@
-const memory = require("../../memory.json");
-
 module.exports.run = async (bot, message, args) => {
+
+    const memory = require("../../memory/"+message.guild.id+".json");
 
     if (memory.tables[args[0]] == undefined) {
         return message.reply("Either the table you have referenced doesn't exist, or you have misspelled its name!")
@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
 
     let table = memory.tables[tableid];
 
-    let result = "Name: "+table.name+"\n Creator: "+table.creator+"\n Entries: ";
+    let result = "ID: "+table.id+"\nName: "+table.name+"\nCreator: "+table.creator+"\nEntries: ";
 
     let counter = 1;
 

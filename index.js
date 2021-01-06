@@ -12,12 +12,10 @@ function s(array) {
     return array[r(array.length)];
 }
 
-require("./util/eventHandler")(bot)
-
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();
 
-const modules = ['admin','export','tables','view'];
+const modules = ['edit','export','tables','view'];
 
 modules.forEach(c => {
 
@@ -38,7 +36,21 @@ modules.forEach(c => {
 
 });
 
+bot.on("ready", () => {
+    console.log(`${bot.user.username} is online`);
+    bot.user.setActivity("Self-Actualization", {type: ""});
+});
+
+bot.on("guildCreate", guild => {
+    if (!fs.existsSync(`./memory/${guild.id}.json`)) {
+        fs.writeFile(`./memory/${guild.id}.json`, `{"settings":{},"tables":{}}`, (err) => {
+            if (err) console.log(err)
+        });
+    };
+});
+
 bot.on("message", async message => {
+
     if(message.author.bot || message.channel.type === "dm") return;
 
     let prefix = botsettings.prefix;
@@ -47,6 +59,10 @@ bot.on("message", async message => {
     let args = messageArray.slice(1);
 
     if(!message.content.startsWith(prefix)) return;
+
+    /*const channelmemory = require(`./memory/${guild.id}.json`);
+    if(channelmemory.settings.channelid !== undefined && message.channel.id !== channelmemory.settings.channelid) return;*/
+
     let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
     if(commandfile) commandfile.run(bot,message,args)
 

@@ -1,11 +1,8 @@
-const memory = require("../../memory.json");
 const { save } = require("../../modules/exports");
 
 module.exports.run = async (bot, message, args) => {
 
-    if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-        return message.reply("You do not have the necessary permissions to perform this command!");
-    };
+    const memory = require("../../memory/"+message.guild.id+".json");
 
     if (memory.tables[args[0]] == undefined) {
         return message.reply("Either the table you have referenced doesn't exist, or you have misspelled its name!")
@@ -20,9 +17,14 @@ module.exports.run = async (bot, message, args) => {
 
     let table = memory.tables[tableid];
     let entry = table.entries[entrynumber];
+
+    if (!message.member.hasPermission("MANAGE_MESSAGES") && message.author.username !== table.creator && message.author.username !== entry.creator) {
+        return message.reply("You do not have the necessary permissions. Only a server mod, the creator of the table, or the creator of the entry can perform this command.");
+    };
+
     table.entries.splice(entrynumber, 1);
 
-    save("./memory.json", memory);
+    save("./memory/"+message.guild.id+".json", memory);
 
     message.reply("Entry deleted from table: "+table.id+" Entry: "+entry.content+" by "+entry.creator);
 
