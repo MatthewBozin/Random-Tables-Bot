@@ -1,13 +1,13 @@
 {
-  "name": "randomtablestest",
+  "name": "randomtables",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord Bot that helps users build random tables for use and export.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Saker Tarsos",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
