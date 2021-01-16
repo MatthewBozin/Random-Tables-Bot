@@ -17,16 +17,16 @@ const nameid = function(name) {
     id = id2.toLowerCase();
 };
 
-const refcheck = function(string, method, message) {
+const refcheck = function(object, string, method, message) {
     let stringsplit = string.split("^");
     if (stringsplit.length > 1) {
-        method(stringsplit, message);
+        method(object, stringsplit, message);
     } else if (method == refreplace) {
         message.reply(string);
     };
 };
 
-const referror = function(stringsplit, message) {
+const referror = function(object, stringsplit, message) {
     const memory = require("../../memory/"+message.guild.id+".json");
     for (let i = 0; i < stringsplit.length; i++) {
         if (i%2 !== 0) {
@@ -37,23 +37,60 @@ const referror = function(stringsplit, message) {
     };
 };
 
-const refreplace = function(stringsplit, message) {
+const refreplace = function(object, stringsplit, message) {
     const memory = require("../memory/"+message.guild.id+".json");
-    for (let i = 0; i < stringsplit.length; i++) {
-        if (i%2 !== 0) {
-            let otherresult = memory.tables[stringsplit[i]];
-            let spliceentry = s(otherresult.entries).content;
-            let start = spliceentry.slice(0, 1);
-            let nocaps = start.toLowerCase();
-            spliceentry = spliceentry.substr(1);
-            let end = spliceentry.slice(-1);
-            let nopunct = end.replace(".", "");
-            spliceentry = spliceentry.substr(0, spliceentry.length-1);
-            stringsplit.splice(i, 1, nocaps+spliceentry+nopunct);
+    if ("nocaps" in object.tags && "nopunct" in object.tags) { 
+        console.log("nocaps nopunct");
+        for (let i = 0; i < stringsplit.length; i++) {
+            if (i%2 !== 0) {
+                let otherresult = memory.tables[stringsplit[i]];
+                let spliceentry = s(otherresult.entries).content;
+                let start = spliceentry.slice(0, 1);
+                let nocaps = start.toLowerCase();
+                spliceentry = spliceentry.substr(1);
+                let end = spliceentry.slice(-1);
+                let nopunct = end.replace(".", "");
+                spliceentry = spliceentry.substr(0, spliceentry.length-1);
+                stringsplit.splice(i, 1, nocaps+spliceentry+nopunct);
+            };
+        };
+    } else if (object.tags.nocaps !== undefined) {
+        console.log("nocaps");
+        for (let i = 0; i < stringsplit.length; i++) {
+            if (i%2 !== 0) {
+                let otherresult = memory.tables[stringsplit[i]];
+                let spliceentry = s(otherresult.entries).content;
+                let start = spliceentry.slice(0, 1);
+                let nocaps = start.toLowerCase();
+                spliceentry = spliceentry.substr(1);
+                stringsplit.splice(i, 1, nocaps+spliceentry);
+            };
+        };
+    } else if (object.tags.nopunct !== undefined) {
+        console.log("nopunct");
+        for (let i = 0; i < stringsplit.length; i++) {
+            if (i%2 !== 0) {
+                let otherresult = memory.tables[stringsplit[i]];
+                let spliceentry = s(otherresult.entries).content;
+                let end = spliceentry.slice(-1);
+                let nopunct = end.replace(".", "");
+                spliceentry = spliceentry.substr(0, spliceentry.length-1);
+                stringsplit.splice(i, 1, spliceentry+nopunct);
+            };
+        };
+    } else {
+        console.log("nothing");
+        for (let i = 0; i < stringsplit.length; i++) {
+            if (i%2 !== 0) {
+                let otherresult = memory.tables[stringsplit[i]];
+                let spliceentry = s(otherresult.entries).content;
+                stringsplit.splice(i, 1, spliceentry);
+            };
         };
     };
-    let final = stringsplit.join("");
-    refcheck(final, refreplace, message);
+    console.log("this should happen last");
+    let final = stringsplit.join(""); //may need to await
+    refcheck(object, final, refreplace, message);
 };
 
 module.exports = { d, r, s, save, nameid, refcheck, referror, refreplace };

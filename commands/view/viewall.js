@@ -6,8 +6,35 @@ module.exports.run = async (bot, message, args) => {
 
     let tables = Object.keys(memory.tables);
 
-    for (element of tables) {
-        result += "\n"+memory.tables[element].id+" ("+memory.tables[element].creator+") "+memory.tables[element].entries.length+" entries.";
+    if (args.length > 1) {
+        let tag = args[1];
+        for (element of tables) {
+            let table = memory.tables[element];
+            if (table.tags[tag] !== undefined) {
+                result += "\n"+table.id+" ("+table.creator+") "+table.entries.length+" entries. Tags: ";
+                if (table.tags == {}) {
+                    result += "none.";
+                } else {
+                    let tags = Object.keys(table.tags);
+                    for (part of tags) {
+                        result += part+": "+table.tags[part]+"; ";
+                    };
+                };
+            };
+        };
+    } else {
+        for (element of tables) {
+            let table = memory.tables[element];
+            result += "\n"+table.id+" ("+table.creator+") "+table.entries.length+" entries. Tags: ";
+            if (table.tags == {}) {
+                result += "none.";
+            } else {
+                let tags = Object.keys(table.tags);
+                for (part of tags) {
+                    result += part+": "+table.tags[part]+"; ";
+                };
+            };
+        };
     };
 
     message.channel.send(result, { split: true });

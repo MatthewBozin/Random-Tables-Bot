@@ -23,32 +23,32 @@ module.exports.run = async (bot, message, args) => {
         return message.reply("You do not have the necessary permissions. Only a server mod, the creator of the table, or the creator of the entry can perform this command.");
     };
 
-    args.splice(0, 2);
+    let tagname = args[2];
+
+    if (tagname == "creator" || tagname == "content") {
+        return message.reply("You cannot add or replace the 'creator' or 'content' tags of an entry.")
+    };
+
+    args.splice(0, 3);
 
     let newcontent = args.join(" ");
 
-    let stringsplit = newcontent.split("^");
-
-    for (let i = 0; i < stringsplit.length; i++) {
-        if (i%2 !== 0) {
-            if (memory.tables[stringsplit[i]] == undefined) {
-                return message.reply("The table '"+stringsplit[i]+"' you are referencing between ^^'s doesn't exist, or you have misspelled its name.");
-            };
-        };
+    if (newcontent == "delete") {
+        delete table.entries[entrynumber].tags[tagname];
+        message.reply("Tag deleted from table entry: "+table.id+" Entry: "+content+" by "+entry.creator+". Tag name: "+tagname+" Tag content: "+newcontent);
+    } else {
+        table.entries[entrynumber].tags[tagname] = newcontent;
+        message.reply("Tag added to table entry: "+table.id+" Entry: "+content+" by "+entry.creator+". Tag name: "+tagname+" Tag content: "+newcontent);
     };
 
-    table.entries[entrynumber].content = newcontent;
-
     save("./memory/"+message.guild.id+".json", memory);
-
-    message.reply("Entry replaced from table: "+table.id+" Entry: "+content+" by "+entry.creator+". New Content: "+newcontent);
 
 }
 
 module.exports.config = {
-    name: "replace",
-    description: "Replace a specific entry from a table with new text. syntax: .replace [tableid] [entry number] [new text]",
-    usage: ".replace",
+    name: "tagentry",
+    description: "Add a tag to an entry, or replace an existing tag. (see .help for information on tags) syntax: .tag [tableid] [entrynumber] [tagname] [tagcontent]",
+    usage: ".tagentry",
     accessableby: "Members",
-    aliases: ['re']
+    aliases: ['tage']
 }

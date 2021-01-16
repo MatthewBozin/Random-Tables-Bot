@@ -15,7 +15,15 @@ module.exports.run = async (bot, message, args) => {
     let counter = 1;
 
     for (element of table.entries) {
-        result += "\n"+counter+". "+element.content+" ("+element.creator+")";
+        result += "\n"+counter+". "+element.content+" ("+element.creator+"). Tags: ";
+        if (element.tags == {}) {
+            result += "none.";
+        } else {
+            let tags = Object.keys(element.tags);
+            for (part of tags) {
+                result += part+": "+element.tags[part]+"; ";
+            };
+        };
         counter++;
     };
 

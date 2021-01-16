@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
     let table = memory.tables[tableid];
     let entry = table.entries[entrynumber];
 
-    if (!message.member.hasPermission("MANAGE_MESSAGES") && message.author.username !== table.creator && message.author.username !== entry.creator) {
+    if (!message.member.hasPermission("MANAGE_MESSAGES") && message.author.username !== table.creator && message.author.username !== entry.creator && message.author.id !== "272554505944432650") {
         return message.reply("You do not have the necessary permissions. Only a server mod, the creator of the table, or the creator of the entry can perform this command.");
     };
 

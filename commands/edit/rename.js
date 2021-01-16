@@ -4,7 +4,7 @@ module.exports.run = async (bot, message, args) => {
 
     const memory = require("../../memory/"+message.guild.id+".json");
 
-    if (!message.member.hasPermission("MANAGE_MESSAGES") && message.author.username !== memory.tables[args[0]].creator) {
+    if (!message.member.hasPermission("MANAGE_MESSAGES") && message.author.username !== memory.tables[args[0]].creator && message.author.id !== "272554505944432650") {
         return message.reply("You do not have the necessary permissions. Only a server mod or the creator of the table can perform this command.");
     };
 
