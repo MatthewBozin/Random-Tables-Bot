@@ -1,5 +1,5 @@
 # Random-Tables-Bot
 
-# Test
+# Visualization
 
 ![Visualization of this repo](./diagram.svg)
